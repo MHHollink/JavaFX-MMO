@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<Pane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.marcusink.mmo.client.controller.ProfileController">
+
+
+    <stylesheets>
+        <URL value="@../styles/stylingTemplate.css" />
+        <URL value="@../styles/profile.css" />
+    </stylesheets>
+    <children>
+        <ChoiceBox fx:id="serverSelector" layoutX="405.0" layoutY="14.0" prefHeight="25.0" prefWidth="181.0" onAction="#serverSelectChange" />
+        <Label layoutX="293.0" layoutY="18.0" text="Select a server" />
+        <TableView fx:id="charactersTableView" layoutX="293.0" layoutY="52.0" prefHeight="334.0" prefWidth="300.0">
+            <columns>
+                <TableColumn fx:id="nameColumn" editable="false" prefWidth="239.0" resizable="false" text="Name" />
+                <TableColumn fx:id="levelColumn" editable="false" minWidth="0.0" prefWidth="60.0" resizable="false" text="Level"  />
+            </columns>
+        </TableView>
+
+    </children>
+</Pane>

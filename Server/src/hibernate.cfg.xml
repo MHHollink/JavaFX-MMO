@@ -1,0 +1,33 @@
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property> <!-- Where is your driver? -->
+        <property name="connection.url">jdbc:postgresql:database</property> <!-- Which database? -->
+        <property name="connection.username">postgres</property> <!-- Database username -->
+        <property name="connection.password">secret</property> <!-- Database password -->
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property> <!-- What query language does hibenate need to create? -->
+
+        <!-- Diable the second-level of cache -->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <!-- Disable the executed SQL to stdout -->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.use_sql_comments">false</property>
+
+        <!-- Create the database schema on startup and leave intact after shutdown -->
+        <property name="hibernate.hbm2ddl.auto">create</property>       <!--Create the database on startup
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>      Create the database on startup, drop it on shutdown
+        <property name="hibernate.hbm2ddl.auto">update</property>           Update the database model when the hibernate model changes
+        <property name="hibernate.hbm2ddl.auto">validate</property>         make no changes to the schema of the database
+        -->
+
+    </session-factory>
+
+</hibernate-configuration>

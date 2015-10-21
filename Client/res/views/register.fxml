@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import com.sun.javafx.scene.control.skin.IntegerField?>
+
+<Pane prefHeight="400.0" minHeight="400.0" maxHeight="400.0" prefWidth="600.0" minWidth="600.0" maxWidth="600.0"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="nl.marcusink.mmo.client.controller.RegisterController"
+      styleClass="root" >
+    <children>
+
+        <Label layoutX="68.0" layoutY="64.0" text="Username" />
+        <Label layoutX="68.0" layoutY="97.0" text="Password" />
+        <Label layoutX="68.0" layoutY="124.0" text="Password" />
+        <Label layoutX="68.0" layoutY="164.0" text="Email" />
+        <Label layoutX="68.0" layoutY="197.0" text="First Name" />
+        <Label layoutX="69.0" layoutY="224.0" text="Last Name" />
+        <Label layoutX="68.0" layoutY="269.0" text="Day of birth" />
+
+        <TextField fx:id="username" layoutX="183.0" layoutY="60.0" prefHeight="25.0" prefWidth="238.0" promptText="Username" />
+
+        <PasswordField fx:id="passwordFirst" layoutX="183.0" layoutY="93.0" prefHeight="25.0" prefWidth="238.0" promptText="Password" />
+
+        <PasswordField fx:id="passwordSecond" layoutX="183.0" layoutY="120.0" prefHeight="25.0" prefWidth="238.0" promptText="Password" />
+
+        <TextField fx:id="email" layoutX="183.0" layoutY="160.0" prefHeight="25.0" prefWidth="238.0" promptText="Email" />
+
+        <TextField fx:id="firstName" layoutX="183.0" layoutY="193.0" prefHeight="25.0" prefWidth="238.0" promptText="First name" />
+        <TextField fx:id="lastName" layoutX="183.0" layoutY="220.0" prefHeight="25.0" prefWidth="238.0" promptText="Last name" />
+
+        <DatePicker fx:id="birthday" editable="false" layoutX="183.0" layoutY="265.0" prefHeight="25.0" prefWidth="238.0" promptText="Birthday" />
+
+        <Button fx:id="register" layoutX="268.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="25.0" prefWidth="66.0" text="Register" textAlignment="CENTER" />
+
+        <Label styleClass="errorMessage" fx:id="usernameRequiredLabel" layoutX="448.0" layoutY="64.0" text="Minimal 6 characters" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="usernameExistsLabel" layoutX="448.0" layoutY="64.0" text="Username already exists" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="passwordRequiredLabel" layoutX="448.0" layoutY="97.0" text="Minimal 6 characters" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="passwordMatchLabel" layoutX="448.0" layoutY="124.0" text="Does not match" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="emailInvalidLabel" layoutX="448.0" layoutY="164.0" text="Not valid" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="firstNameNoAZLabel" layoutX="448.0" layoutY="197.0" text="Only A-z" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="lastNameNoAZLabel" layoutX="448.0" layoutY="224.0" text="Only A-z" visible="false"/>
+        <Label styleClass="errorMessage" fx:id="birthdayRequiredLabel" layoutX="448.0" layoutY="269.0" text="Required" visible="false"/>
+
+    </children>
+
+    <stylesheets>
+        <URL value="@../styles/stylingTemplate.css" />
+        <URL value="@../styles/register.css" />
+    </stylesheets>
+</Pane>
