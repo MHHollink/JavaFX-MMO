@@ -1,7 +1,6 @@
 package nl.marcusink.mmo.client.controller.connection;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 
 public class ServerConnection {
@@ -9,7 +8,6 @@ public class ServerConnection {
     public static final String ip = "";
     public static final int port  = 5576;
 
-    private Socket socketConnection;
     private ServerConnectionRunnable runnable;
 
     private static ServerConnection instance;
@@ -21,8 +19,8 @@ public class ServerConnection {
     private ServerConnection() {
         try {
 
-            socketConnection = new Socket(ip, port);
-            socketConnection = new Socket(InetAddress.getLocalHost(), port);
+            Socket socketConnection = new Socket(ip, port);
+            //socketConnection = new Socket(InetAddress.getLocalHost(), port);
 
             runnable = new ServerConnectionRunnable(socketConnection);
             new Thread(runnable).start();

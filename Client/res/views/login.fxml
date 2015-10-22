@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import java.net.URL?>
 
-<Pane prefHeight="400.0" minHeight="400.0" maxHeight="400.0" prefWidth="600.0" minWidth="600.0" maxWidth="600.0"
-      xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="nl.marcusink.mmo.client.controller.LoginController"
-      styleClass="root" >
+<Pane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.marcusink.mmo.client.controller.LoginController">
    <children>
+
+        <Label fx:id="errorLabel" layoutX="397.0" layoutY="266.0" text="Username or password is incorrect" styleClass="errorMessage" visible="false" />
 
         <TextField fx:id="username" layoutX="408.0" layoutY="298.0" prefHeight="25.0" prefWidth="172.0" promptText="Username" />
 
         <PasswordField fx:id="password" layoutX="408.0" layoutY="331.0" prefHeight="25.0" prefWidth="172.0" promptText="Password" />
 
-        <Button fx:id="submitLogin" onAction="#handleLoginSubmit" layoutX="408.0" layoutY="365.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Login" textAlignment="CENTER" />
+        <Button fx:id="submitLogin" layoutX="408.0" layoutY="365.0" mnemonicParsing="false" onAction="#handleLoginSubmit" prefHeight="25.0" prefWidth="66.0" text="Login" textAlignment="CENTER" />
 
-        <Button fx:id="register" onAction="#handleRegister" layoutX="514.0" layoutY="365.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Register" textAlignment="CENTER" />
+        <Button fx:id="register" layoutX="514.0" layoutY="365.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="25.0" prefWidth="66.0" text="Register" textAlignment="CENTER" />
 
    </children>
 

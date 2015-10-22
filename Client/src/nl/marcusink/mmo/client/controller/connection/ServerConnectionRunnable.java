@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class ServerConnectionRunnable implements Runnable {
         try {
             while (active) {
                 if (input.hasNextLine()) {
-                    data = input.nextLine();
+                    data = receive( input.nextLine() );
                     notifyObservers();
                 }
             }
@@ -58,27 +60,41 @@ public class ServerConnectionRunnable implements Runnable {
     }
 
     private void notifyObservers() {
-        try {
-            data = Crypt.decrypt(data);
-            for (SocketObserver observer : observers) observer.update(data);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | Base64DecodingException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        for (SocketObserver observer : observers) observer.update(data);
     }
 
     public void register(SocketObserver so){
         observers.add(so);
-    };
+    }
 
     public void unregister(SocketObserver so){
         observers.remove(so);
-    };
+    }
 
-    public void send(String s) {
+    protected void send(String s) {
         try {
-            output.println(Crypt.encrypt(s));
+            output.println(
+                    URLEncoder.encode(          // ENCODE THE
+                            Crypt.encrypt(s),   // ENCRYPTED MESSAGE
+                            "ASCII"
+                    )
+            );
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    public String receive(String s) {
+        try {
+            return Crypt.decrypt(           // DECRYPT THE
+                    URLDecoder.decode(      // DECODED MESSAGE
+                            s,
+                            "UTF-8"
+                    )
+            );
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | NoSuchPaddingException | Base64DecodingException | IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

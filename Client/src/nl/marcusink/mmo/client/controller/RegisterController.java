@@ -1,24 +1,17 @@
 package nl.marcusink.mmo.client.controller;
 
-
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import nl.marcusink.mmo.client.Main;
+import nl.marcusink.mmo.client.controller.connection.ServerConnection;
 import nl.marcusink.mmo.client.controller.connection.SocketObserver;
-import nl.marcusink.mmo.client.controller.connection.crypter.Crypt;
 import nl.marcusink.mmo.client.controller.connection.hasher.Hash;
-import nl.marcusink.mmo.client.model.Player;
-import nl.marcusink.mmo.client.model.PlayerList;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.Period;
 
 public class RegisterController implements SocketObserver {
 
@@ -40,12 +33,12 @@ public class RegisterController implements SocketObserver {
     public Label usernameExistsLabel;
 
     public void handleRegister() {
-        String fname, lname, uname, pass, pass2 , mail;
+        String fName, lName, uName, pass, pass2 , mail;
         LocalDate date;
 
-        fname = firstName.getText();
-        lname = lastName.getText();
-        uname = username.getText();
+        fName = firstName.getText();
+        lName = lastName.getText();
+        uName = username.getText();
         pass = passwordFirst.getText();
         pass2 = passwordSecond.getText();
         mail = email.getText();
@@ -58,16 +51,17 @@ public class RegisterController implements SocketObserver {
         lastNameNoAZLabel.setVisible(false);
         emailInvalidLabel.setVisible(false);
         birthdayRequiredLabel.setVisible(false);
+        usernameExistsLabel.setVisible(false);
 
-        if(uname != null && uname.length() >= 6) {
+        if(uName != null && uName.length() >= 6) {
             if (pass != null && pass.length() >= 6) {
                 if (isMatch(pass, pass2)) {
-                    if (isOnlyLetters(fname)) {
-                        if (isOnlyLetters(lname)) {
+                    if (isOnlyLetters(fName)) {
+                        if (isOnlyLetters(lName)) {
                             if (isValidEmail(mail)) {
                                 if (date!=null) {
 
-                                        doRegister(uname, fname, lname, pass, mail, date.toEpochDay());
+                                        doRegister(uName, fName, lName, pass, mail, date.toEpochDay());
 
                                 } else birthdayRequiredLabel.setVisible(true);
                             } else emailInvalidLabel.setVisible(true);
@@ -78,33 +72,21 @@ public class RegisterController implements SocketObserver {
         } else usernameRequiredLabel.setVisible(true);
     }
 
-    private void doRegister(String username, String firstName, String lastName, String password, String email, Long birthday) {
-        if(PlayerList.getInstance().get(username) == null) {
+    private void doRegister(String username, String firstName, String lastName, String password, String email, long birthday) {
 
             password = Hash.md5(password);
-            PlayerList.getInstance().put( username , new Player(username,password,email,firstName,lastName,birthday));
+            ServerConnection.getInstance().send("/register "+username+" "+password+" "+email+" "+firstName+" "+lastName+" "+String.valueOf(birthday));
 
-            try {
-                Scene scene = new Scene(
-                        FXMLLoader.load(
-                                Main.class.getClass().getResource(
-                                        "/views/login.fxml"
-                                )
-                        )
-                );
-                Main.mainStage.setScene(scene);
-            } catch (IOException e) {
-                // Show notification of some error
-                e.printStackTrace();
-            }
+    }
 
-        } else {
-            usernameExistsLabel.setVisible(true);
-        }
+    @SuppressWarnings("unused")
+    @FXML
+    protected void initialize() {
+        ServerConnection.getInstance().getRunnable().register(this);
     }
 
     private boolean isValidEmail(String input){
-        return input != null && input.matches("([A-z0-9-]+(?:\\.[A-z0-9-]+)*)@((?:[A-z0-9-]+\\.)*[A-z0-9-]{1,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)");
+        return (input != null) && input.matches("([A-z0-9-]+(?:\\.[A-z0-9-]+)*)@((?:[A-z0-9-]+\\.)*[A-z0-9-]{1,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)");
     }
 
     private boolean isMatch(String a, String b){
@@ -115,12 +97,28 @@ public class RegisterController implements SocketObserver {
         return input != null && input.matches("([A-Za-z])+");
     }
 
-    private int getAge(LocalDate birthday) {
-        return Period.between(birthday, LocalDate.now()).getYears();
-    }
-
     @Override
     public void update(String data) {
-
+        if(data.contains("/register")) {
+            if(data.contains("success")) {
+                try {
+                    Scene scene = new Scene(
+                            FXMLLoader.load(
+                                    Main.class.getClass().getResource(
+                                            "/views/login.fxml"
+                                    )
+                            )
+                    );
+                    ServerConnection.getInstance().getRunnable().unregister(this);
+                    Platform.runLater(() -> Main.mainStage.setScene(scene));
+                } catch (IOException e) {
+                    // Show notification of some error
+                    e.printStackTrace();
+                }
+            }
+            if(data.contains("failed")) {
+                usernameExistsLabel.setVisible(true);
+            }
+        }
     }
 }

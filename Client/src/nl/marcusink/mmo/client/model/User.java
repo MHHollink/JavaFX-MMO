@@ -30,13 +30,14 @@ public class User {
 
     public void logOut(){
         loggedIn = false;
+        player = null;
     }
 
     public void setPlayer(Player player) {
         if(loggedIn) {
             this.player = player;
         } else {
-            System.out.println("You were already logged in!");
+            System.out.println("You need to be logged in!");
         }
     }
 

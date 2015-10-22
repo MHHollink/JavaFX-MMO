@@ -22,11 +22,12 @@
         <property name="hibernate.use_sql_comments">false</property>
 
         <!-- Create the database schema on startup and leave intact after shutdown -->
-        <property name="hibernate.hbm2ddl.auto">create</property>       <!--Create the database on startup
+        <!--
+        <property name="hibernate.hbm2ddl.auto">create</property>           Create the database on startup
         <property name="hibernate.hbm2ddl.auto">create-drop</property>      Create the database on startup, drop it on shutdown
         <property name="hibernate.hbm2ddl.auto">update</property>           Update the database model when the hibernate model changes
         <property name="hibernate.hbm2ddl.auto">validate</property>         make no changes to the schema of the database
-        -->
+        --><property name="hibernate.hbm2ddl.auto">create-drop</property>
 
     </session-factory>
 

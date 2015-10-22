@@ -2,6 +2,7 @@ package nl.marcusink.mmo.client.model;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
@@ -11,12 +12,12 @@ public class Player {
     private String email;
     private String firstName;
     private String lastName;
-    private Long birthday;
+    private String birthday;
 
     private HashMap<String, Avatar> avatars;
 
     public Player(String username, String passwordFirst, String email,
-                  String firstName, String lastName, Long birthday) {
+                  String firstName, String lastName, String birthday) {
         this.username = username;
         this.passwordFirst = passwordFirst;
         this.email = email;
@@ -67,16 +68,28 @@ public class Player {
         this.lastName = lastName;
     }
 
-    public long getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(long birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
     public void addAvatar(String name, Avatar avatar) {
         avatars.put(name.toLowerCase(), avatar);
+    }
+
+    public Avatar getAvatarByName(String name) {
+        return avatars.get(name);
+    }
+
+    public ArrayList<Avatar> getAvatars () {
+        ArrayList<Avatar> list = new ArrayList<>();
+        for (String key : avatars.keySet()) {
+            list.add(avatars.get(key));
+        }
+        return list;
     }
 
     public String toString() {

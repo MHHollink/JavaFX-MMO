@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Crypt {
 
-    private static final String key = "EquilibriumSecnd"; // 128 bit // 16 byte
+    private static final String key = "EquilibriumSecnd";
     private static Cipher cipher;
     private static SecretKeySpec aesKey;
 
@@ -25,21 +25,13 @@ public class Crypt {
             IllegalBlockSizeException,
             InvalidKeyException,
             UnsupportedEncodingException {
-        // encrypt the text
-//        Cipher cipher = getCipher();
-//        Key easKey = getAESKey();
-//
-//        cipher.init(Cipher.ENCRYPT_MODE, easKey);
-//
-//        byte[] plainTextBytes = plainText.getBytes();
-//        byte[] encrypted = cipher.doFinal(plainTextBytes);
-//
-//        String encryptedText = new String(encrypted);
-//        return encryptedText;
 
-        getCipher().init(Cipher.ENCRYPT_MODE, getAESKey());
+        Cipher cipher = getCipher();
+        Key aesKey = getAESKey();
+
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
         byte[] utf8 = plainText.getBytes("UTF8");
-        byte[] encryptedData = getCipher().doFinal(utf8);
+        byte[] encryptedData = cipher.doFinal(utf8);
         return Base64.encode(encryptedData);
     }
 
@@ -50,27 +42,18 @@ public class Crypt {
             IllegalBlockSizeException,
             Base64DecodingException,
             UnsupportedEncodingException {
-        // decrypt the text
-//        Cipher cipher = getCipher();
-//        Key easKey = getAESKey();
-//
-//        cipher.init(Cipher.DECRYPT_MODE, easKey);
-//
-//        byte[] encryptedTextBytes = encryptedText.getBytes();
-//
-//        byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-//
-//        String decryptedText = new String(decryptedTextBytes);
-//        return decryptedText;
-        getCipher().init(Cipher.DECRYPT_MODE, getAESKey());
-        byte[] decodedData = Base64.decode(encryptedText);//this.b64Decoder.decodeBuffer(aData);
-        byte[] utf8 = getCipher().doFinal(decodedData);
+
+        Cipher cipher = getCipher();
+        Key aesKey = getAESKey();
+
+        cipher.init(Cipher.DECRYPT_MODE, aesKey);
+        byte[] decodedData = Base64.decode(encryptedText);
+        byte[] utf8 = cipher.doFinal(decodedData);
         return new String(utf8, "UTF8");
     }
 
     private static Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
         if(cipher == null) {
-            // Create cipher
             cipher = Cipher.getInstance("AES");
         }
         return cipher;
@@ -78,7 +61,6 @@ public class Crypt {
 
     private static Key getAESKey(){
         if (aesKey == null){
-            // Create key
             aesKey = new SecretKeySpec(key.getBytes(), "AES");
         }
         return aesKey;

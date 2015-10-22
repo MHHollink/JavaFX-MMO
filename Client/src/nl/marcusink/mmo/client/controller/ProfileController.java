@@ -3,10 +3,15 @@ package nl.marcusink.mmo.client.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import nl.marcusink.mmo.client.controller.connection.ServerConnection;
 import nl.marcusink.mmo.client.controller.connection.SocketObserver;
 import nl.marcusink.mmo.client.model.Avatar;
+import nl.marcusink.mmo.client.model.User;
 
 @SuppressWarnings("unchecked")
 public class ProfileController implements SocketObserver {
@@ -15,11 +20,14 @@ public class ProfileController implements SocketObserver {
     public TableView charactersTableView;
     public TableColumn nameColumn;
     public TableColumn levelColumn;
+    public Button createAvatar;
 
     private static ObservableList<Avatar> characters = FXCollections.observableArrayList();
 
+    @SuppressWarnings("unused")
     @FXML
     protected void initialize() {
+        ServerConnection.getInstance().getRunnable().register(this);
 
         serverSelector.getItems().add(0, "AA");
         serverSelector.getItems().add(1, "AB");
@@ -63,5 +71,9 @@ public class ProfileController implements SocketObserver {
     @Override
     public void update(String data) {
 
+    }
+
+    public void createAvatar() {
+        ServerConnection.getInstance().send("/create "+ User.getInstance().getPlayer().getUsername() +" Thor Male God Asgardian");
     }
 }

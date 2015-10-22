@@ -1,24 +1,12 @@
 package nl.marcusink.mmo.client;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import nl.marcusink.mmo.client.controller.connection.ServerConnection;
-import nl.marcusink.mmo.client.controller.connection.hasher.Hash;
-import nl.marcusink.mmo.client.model.Player;
-import nl.marcusink.mmo.client.model.PlayerList;
-
-import java.util.Date;
 
 public class Main extends Application{
 
@@ -49,17 +37,15 @@ public class Main extends Application{
         mainStage.addEventHandler(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.ESCAPE) {
                 mainStage.close();
-                ServerConnection.getInstance().getRunnable().send("/disconnectMe");
+                ServerConnection.getInstance().send("/disconnectMe");
+                System.exit(0);
             }
         });
 
-
         mainStage.setOnHiding(event -> {
-            ServerConnection.getInstance().getRunnable().send("/disconnectMe");
+            ServerConnection.getInstance().send("/disconnectMe");
+            System.exit(0);
         });
-
-        Player p = new Player("Mjollnir94", Hash.md5("askask"), "mh@mail.com","Marcel","Hollink", new Date().getTime());
-        PlayerList.getInstance().put("Mjollnir94", p);
     }
 
     @Override

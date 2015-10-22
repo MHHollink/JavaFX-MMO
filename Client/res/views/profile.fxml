@@ -14,14 +14,16 @@
         <URL value="@../styles/profile.css" />
     </stylesheets>
     <children>
-        <ChoiceBox fx:id="serverSelector" layoutX="405.0" layoutY="14.0" prefHeight="25.0" prefWidth="181.0" onAction="#serverSelectChange" />
-        <Label layoutX="293.0" layoutY="18.0" text="Select a server" />
-        <TableView fx:id="charactersTableView" layoutX="293.0" layoutY="52.0" prefHeight="334.0" prefWidth="300.0">
+        <ChoiceBox fx:id="serverSelector" layoutX="405.0" layoutY="14.0" onAction="#serverSelectChange" prefHeight="25.0" prefWidth="187.0" />
+        <Label layoutX="293.0" layoutY="18.0" text="Select a server :" />
+        <TableView fx:id="charactersTableView" layoutX="293.0" layoutY="52.0" prefHeight="295.0" prefWidth="300.0">
             <columns>
                 <TableColumn fx:id="nameColumn" editable="false" prefWidth="239.0" resizable="false" text="Name" />
-                <TableColumn fx:id="levelColumn" editable="false" minWidth="0.0" prefWidth="60.0" resizable="false" text="Level"  />
+                <TableColumn fx:id="levelColumn" editable="false" minWidth="0.0" prefWidth="60.0" resizable="false" text="Level" />
             </columns>
         </TableView>
+        <Button fx:id="createAvatar" layoutX="453.0" layoutY="357.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Free slots [ 12 ]" onAction="#createAvatar"/>
+        <Label layoutX="293.0" layoutY="361.0" text="Create a new character : " />
 
     </children>
 </Pane>

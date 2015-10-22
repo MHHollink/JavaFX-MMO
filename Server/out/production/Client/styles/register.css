@@ -1,5 +1,5 @@
-.root{
-
+.root {
+    /* -fx-background-image: url("background.jpg"); */
 }
 .errorMessage {
     -fx-text-fill: #FF0000;
