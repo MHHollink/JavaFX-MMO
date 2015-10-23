@@ -1,24 +1,20 @@
 package nl.marcusink.mmo.server.database.table;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user_owns_avatar")
+@Table(name = "user_owns_avatar", schema = "public")
 public class UserOwnsAvatar implements Serializable{
 
     @Id
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user", nullable = false)
+    @JoinColumn(name = "user_username", nullable = false)
     private User user;
 
     @Id
-    @OneToOne(targetEntity = Character.class)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @JoinColumn(name = "avater", nullable = false, unique = true)
+    @OneToOne(targetEntity = Avatar.class)
+    @JoinColumn(name = "avatar_avatar", nullable = false, unique = true)
     private Avatar avatar;
 
     public User getUser() {

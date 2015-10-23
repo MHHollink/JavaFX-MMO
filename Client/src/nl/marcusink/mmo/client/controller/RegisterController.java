@@ -9,6 +9,7 @@ import nl.marcusink.mmo.client.Main;
 import nl.marcusink.mmo.client.controller.connection.ServerConnection;
 import nl.marcusink.mmo.client.controller.connection.SocketObserver;
 import nl.marcusink.mmo.client.controller.connection.hasher.Hash;
+import nl.marcusink.mmo.client.utils.log;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,6 +34,8 @@ public class RegisterController implements SocketObserver {
     public Label usernameExistsLabel;
 
     public void handleRegister() {
+        log.I("Registering an account");
+
         String fName, lName, uName, pass, pass2 , mail;
         LocalDate date;
 
@@ -82,6 +85,9 @@ public class RegisterController implements SocketObserver {
     @SuppressWarnings("unused")
     @FXML
     protected void initialize() {
+        log.D("initializing " + getClass().getSimpleName());
+        birthday.setValue(LocalDate.of(1990,1,1));
+
         ServerConnection.getInstance().getRunnable().register(this);
     }
 
@@ -101,6 +107,7 @@ public class RegisterController implements SocketObserver {
     public void update(String data) {
         if(data.contains("/register")) {
             if(data.contains("success")) {
+                log.I("You successfully registered an account on the "+Main.mainTitle+" servers");
                 try {
                     Scene scene = new Scene(
                             FXMLLoader.load(
@@ -117,6 +124,7 @@ public class RegisterController implements SocketObserver {
                 }
             }
             if(data.contains("failed")) {
+                log.I("The username already exist on our servers");
                 usernameExistsLabel.setVisible(true);
             }
         }

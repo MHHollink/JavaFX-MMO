@@ -2,6 +2,7 @@ package nl.marcusink.mmo.client.model;
 
 
 import com.google.gson.Gson;
+import nl.marcusink.mmo.client.utils.log;
 
 public class User {
     private static User instance = new User();
@@ -23,12 +24,13 @@ public class User {
 
     public void login(){
         if(loggedIn) {
-            System.out.println("You were already logged in!");
-        }
+            log.W("You were already logged in!");
+        } else { log.I("You logged in!"); }
         loggedIn = true;
     }
 
     public void logOut(){
+        if (loggedIn) log.I("you have been logged out");
         loggedIn = false;
         player = null;
     }
@@ -36,8 +38,10 @@ public class User {
     public void setPlayer(Player player) {
         if(loggedIn) {
             this.player = player;
+            log.D("Your account has been set with the following user details: "+ player.toString());
         } else {
-            System.out.println("You need to be logged in!");
+            log.W("Something went wrong while setting your user details in place");
+            log.W("Please redo the login");
         }
     }
 

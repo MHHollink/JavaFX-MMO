@@ -2,6 +2,7 @@ package nl.marcusink.mmo.client.controller.connection;
 
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import nl.marcusink.mmo.client.controller.connection.crypter.Crypt;
+import nl.marcusink.mmo.client.utils.log;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -43,6 +44,7 @@ public class ServerConnectionRunnable implements Runnable {
     @Override
     public void run() {
         try {
+            log.I("Server connection has been established, your game is now running");
             while (active) {
                 if (input.hasNextLine()) {
                     data = receive( input.nextLine() );
@@ -60,14 +62,18 @@ public class ServerConnectionRunnable implements Runnable {
     }
 
     private void notifyObservers() {
+        log.T("recieved a message from the server, notifying controller about the new data!");
+        log.T(data);
         for (SocketObserver observer : observers) observer.update(data);
     }
 
     public void register(SocketObserver so){
+        log.D(so.getClass().getSimpleName() + "has registered him self to the socket observer");
         observers.add(so);
     }
 
     public void unregister(SocketObserver so){
+        log.D(so.getClass().getSimpleName() + "has unregistered him self to the socket observer");
         observers.remove(so);
     }
 

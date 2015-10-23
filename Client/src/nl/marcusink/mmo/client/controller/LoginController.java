@@ -15,6 +15,7 @@ import nl.marcusink.mmo.client.controller.connection.SocketObserver;
 import nl.marcusink.mmo.client.controller.connection.hasher.Hash;
 import nl.marcusink.mmo.client.model.Player;
 import nl.marcusink.mmo.client.model.User;
+import nl.marcusink.mmo.client.utils.log;
 
 import java.io.IOException;
 
@@ -27,6 +28,8 @@ public class LoginController implements SocketObserver {
     public Label errorLabel;
 
     public void handleLoginSubmit() {
+        log.I("Attempt lo login");
+
         String uName = username.getText();
         String pass = password.getText();
 
@@ -48,6 +51,7 @@ public class LoginController implements SocketObserver {
     @SuppressWarnings("unused")
     @FXML
     protected void initialize() {
+        log.D("initializing "+getClass().getSimpleName());
         ServerConnection.getInstance().getRunnable().register(this);
     }
 

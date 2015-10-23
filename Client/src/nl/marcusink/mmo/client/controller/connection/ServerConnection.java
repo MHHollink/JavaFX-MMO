@@ -1,5 +1,7 @@
 package nl.marcusink.mmo.client.controller.connection;
 
+import nl.marcusink.mmo.client.utils.log;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -17,8 +19,8 @@ public class ServerConnection {
     }
 
     private ServerConnection() {
+        log.I("Server connection is being established");
         try {
-
             Socket socketConnection = new Socket(ip, port);
             //socketConnection = new Socket(InetAddress.getLocalHost(), port);
 
@@ -26,6 +28,7 @@ public class ServerConnection {
             new Thread(runnable).start();
 
         } catch (IOException e) {
+            log.E("The connection could not be established!");
             e.printStackTrace();
         }
     }

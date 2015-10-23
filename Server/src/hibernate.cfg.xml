@@ -4,7 +4,7 @@
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- Where is your driver? -->
         <property name="connection.url">jdbc:postgresql:database</property> <!-- Which database? -->
-        <property name="connection.username">postgres</property> <!-- Database username -->
+        <property name="connection.username">postgres</property> <!-- Database user -->
         <property name="connection.password">secret</property> <!-- Database password -->
 
         <!-- JDBC connection pool (use the built-in) -->
@@ -27,7 +27,7 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>      Create the database on startup, drop it on shutdown
         <property name="hibernate.hbm2ddl.auto">update</property>           Update the database model when the hibernate model changes
         <property name="hibernate.hbm2ddl.auto">validate</property>         make no changes to the schema of the database
-        --><property name="hibernate.hbm2ddl.auto">create-drop</property>
+        --><property name="hibernate.hbm2ddl.auto">update</property>
 
     </session-factory>
 

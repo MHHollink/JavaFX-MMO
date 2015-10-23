@@ -5,11 +5,16 @@ import nl.marcusink.mmo.server.database.table.Avatar;
 import nl.marcusink.mmo.server.database.table.Server;
 import nl.marcusink.mmo.server.database.table.User;
 import nl.marcusink.mmo.server.database.table.UserOwnsAvatar;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Database {
 
@@ -27,10 +32,11 @@ public class Database {
 
         StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build(); //
 
-        this.sessionFactory = configuration // Create the session factory with all the tables
-                .addAnnotatedClass(User.class) // Each anotated class can be added in a chain
+        sessionFactory = configuration
+                .addAnnotatedClass(User.class)
                 .addAnnotatedClass(Server.class)
                 .addAnnotatedClass(Avatar.class)
+                .addAnnotatedClass(UserOwnsAvatar.class)
                 .buildSessionFactory(standardServiceRegistry); // Build the session factory
     }
 
@@ -116,6 +122,30 @@ public class Database {
             session.close();
 
             return true;
+        }
+
+        public static String avatarsRequest(String username){
+            Session session = Database.getDatabaseInstance().getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Query query = session.createQuery("from UserOwnsAvatar where user_username = :username");
+            query.setParameter("username", username);
+
+            ArrayList<Avatar> avatars = new ArrayList<>();
+
+            ArrayList<UserOwnsAvatar> ownedAvatars;
+            List list = query.list();
+            ownedAvatars = (ArrayList<UserOwnsAvatar>) list;
+
+            avatars.addAll(
+                    ownedAvatars.stream().map(
+                            UserOwnsAvatar::getAvatar
+                    ).collect(
+                            Collectors.toList()
+                    )
+            );
+
+            return new Gson().toJson(avatars);
         }
     }
 }

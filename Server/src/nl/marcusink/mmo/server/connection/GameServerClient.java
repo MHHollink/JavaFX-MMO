@@ -68,7 +68,7 @@ public class GameServerClient implements Runnable{
                     String data = receive(input.nextLine()); // received data
                     String[] args = data.split(" ");         // split into separate arguments
 
-                    log.I(clientPrefix + " > " + data);     // log the data that was recieved
+                    log.T(clientPrefix + " > " + data);     // log the data that was recieved
                     String response = "";                   // Empty response that will be filled up ...
 
                     if(data.contains("/login")) {
@@ -88,6 +88,7 @@ public class GameServerClient implements Runnable{
 
                     if(data.contains("/request")) {
                         if(data.contains("my-data")) response = "/request my-data " + Database.Queries.profileRequest(args[2]);
+                        if(data.contains("avatars")) response = "/request avatars " + Database.Queries.avatarsRequest(args[2]);
                     }
 
                     send(response);

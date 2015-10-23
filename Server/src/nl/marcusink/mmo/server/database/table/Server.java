@@ -5,9 +5,7 @@ package nl.marcusink.mmo.server.database.table;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "servers", schema = "public"
-        , indexes = {@Index(name = "server_index", columnList = "address")}
-)
+@Table(name = "servers", schema = "public")
 public class Server {
     @Id
     @Column(name = "address", nullable = false, unique = true)

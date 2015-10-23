@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import nl.marcusink.mmo.client.controller.connection.ServerConnection;
+import nl.marcusink.mmo.client.utils.log;
 
 public class Main extends Application{
 
@@ -16,6 +17,7 @@ public class Main extends Application{
 
     public static void main(String[] args) {
         launch(args);
+        log.I("Starting "+mainTitle);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class Main extends Application{
                         )
                 )
         );
+        log.I("Started login view");
 
         mainStage.setTitle(mainTitle);
         mainStage.setResizable(false);
@@ -36,6 +39,7 @@ public class Main extends Application{
 
         mainStage.addEventHandler(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.ESCAPE) {
+                log.I("Pressed escape to exit "+mainTitle);
                 mainStage.close();
                 ServerConnection.getInstance().send("/disconnectMe");
                 System.exit(0);
@@ -43,13 +47,9 @@ public class Main extends Application{
         });
 
         mainStage.setOnHiding(event -> {
+            log.I("Pressed x to exit "+mainTitle);
             ServerConnection.getInstance().send("/disconnectMe");
             System.exit(0);
         });
-    }
-
-    @Override
-    public void stop() throws Exception {
-        super.stop();
     }
 }

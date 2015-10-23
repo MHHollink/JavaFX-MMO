@@ -1,5 +1,6 @@
 package nl.marcusink.mmo.client.controller;
 
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import nl.marcusink.mmo.client.controller.connection.ServerConnection;
 import nl.marcusink.mmo.client.controller.connection.SocketObserver;
 import nl.marcusink.mmo.client.model.Avatar;
 import nl.marcusink.mmo.client.model.User;
+import nl.marcusink.mmo.client.utils.log;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
 public class ProfileController implements SocketObserver {
@@ -27,6 +31,7 @@ public class ProfileController implements SocketObserver {
     @SuppressWarnings("unused")
     @FXML
     protected void initialize() {
+        log.D("initializing " + getClass().getSimpleName());
         ServerConnection.getInstance().getRunnable().register(this);
 
         serverSelector.getItems().add(0, "AA");
@@ -52,25 +57,22 @@ public class ProfileController implements SocketObserver {
 
     private void reloadCharacters(String server) {
         characters.clear();
-        switch (server) {
-            case "AA" :
-                characters.addAll(new Avatar("Thor", 16), new Avatar("IronMan", 7));
-                break;
-            case "AB" :
-                characters.addAll(new Avatar("Falcon", 4));
-                break;
-            case "AC" :
-                characters.addAll(new Avatar("Hulk", 23));
-                break;
-            case "BA" :
-                characters.addAll(new Avatar("NickFury", 5));
-                break;
-        }
+        ServerConnection.getInstance().send("/request avatars "+User.getInstance().getPlayer().getUsername());
     }
 
     @Override
     public void update(String data) {
+        if(data.contains("/request")) {
+            if (data.contains("avatars")) {
+                ArrayList<Avatar> avatars = new Gson().fromJson(data.split(" ")[2], ArrayList.class);
 
+                for (Avatar avatar : avatars) {
+                    User.getInstance().getPlayer().addAvatar(avatar);
+                }
+
+                characters.addAll(User.getInstance().getPlayer().getAvatars());
+            }
+        }
     }
 
     public void createAvatar() {

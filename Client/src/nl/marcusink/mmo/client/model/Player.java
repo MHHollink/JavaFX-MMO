@@ -1,6 +1,7 @@
 package nl.marcusink.mmo.client.model;
 
 import com.google.gson.Gson;
+import nl.marcusink.mmo.client.utils.log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +11,9 @@ public class Player {
     private String username;
     private String passwordFirst;
     private String email;
-    private String firstName;
-    private String lastName;
-    private String birthday;
+    private String fName;
+    private String lName;
+    private String BDay;
 
     private HashMap<String, Avatar> avatars;
 
@@ -21,11 +22,12 @@ public class Player {
         this.username = username;
         this.passwordFirst = passwordFirst;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
+        this.fName = firstName;
+        this.lName = lastName;
+        this.BDay = birthday;
 
-        this.avatars = new HashMap<>();
+        log.D("An player has been created");
+        log.D("These are the details: " + this.toString());
     }
 
     public String getUsername() {
@@ -52,40 +54,44 @@ public class Player {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getfName() {
+        return fName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setfName(String fName) {
+        this.fName = fName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getlName() {
+        return lName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setlName(String lName) {
+        this.lName = lName;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getBDay() {
+        return BDay;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setBDay(String BDay) {
+        this.BDay = BDay;
     }
 
-    public void addAvatar(String name, Avatar avatar) {
-        avatars.put(name.toLowerCase(), avatar);
+    public void addAvatar(Avatar avatar) {
+        if (avatars == null) this.avatars = new HashMap<>();
+        avatars.put(avatar.getName().toLowerCase(), avatar);
     }
 
     public Avatar getAvatarByName(String name) {
-        return avatars.get(name);
+        if (avatars == null) return null;
+        return avatars.get(name.toLowerCase());
     }
 
     public ArrayList<Avatar> getAvatars () {
         ArrayList<Avatar> list = new ArrayList<>();
+        if (avatars == null) this.avatars = new HashMap<>();
+
         for (String key : avatars.keySet()) {
             list.add(avatars.get(key));
         }

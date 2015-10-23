@@ -1,9 +1,11 @@
-package nl.marcusink.mmo.server.utils;
+package nl.marcusink.mmo.client.utils;
 
 
 import java.util.Date;
 
 public class log {
+
+    private static int level = -1;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -17,23 +19,23 @@ public class log {
 
 
     public static void E(String log){
-        System.out.println(ANSI_RED + whatIsTheTime() +" ERROR: " + log + ANSI_RESET);
+        if( level < 4 ) System.out.println(ANSI_RED + whatIsTheTime() +" ERROR: " + log + ANSI_RESET);
     }
 
     public static void W(String log){
-        System.out.println(ANSI_PURPLE + whatIsTheTime() +" WARN: " + log + ANSI_RESET);
+        if( level < 3 ) System.out.println(ANSI_PURPLE + whatIsTheTime() +" WARN: " + log + ANSI_RESET);
     }
 
     public static void I(String log){
-        System.out.println(ANSI_BLACK + whatIsTheTime() +" INFO: " + log + ANSI_RESET);
+        if( level < 2 ) System.out.println(ANSI_BLACK + whatIsTheTime() +" INFO: " + log + ANSI_RESET);
     }
 
     public static void D(String log){
-        System.out.println(ANSI_GREEN + whatIsTheTime() +" DEBUG: " + log + ANSI_RESET);
+        if( level < 1 ) System.out.println(ANSI_GREEN + whatIsTheTime() +" DEBUG: " + log + ANSI_RESET);
     }
 
     public static void T(String log){
-        System.out.println(ANSI_BLUE + whatIsTheTime() +" TRACE: " + log + ANSI_RESET);
+         if( level < 0 ) System.out.println(ANSI_BLUE + whatIsTheTime() +" TRACE: " + log + ANSI_RESET);
     }
 
     private static String whatIsTheTime(){
